@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paps HOME</title>
+  <style>
+    body {
+      background-color: #222;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    .button {
+      width: 150px;
+      height: 40px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+
+    .button.on {
+      background-color: #e53935;
+    }
+
+    /* Set label background-color to transparent */
+    label {
+      background-color: transparent;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to Paps HOME</h1>
+
+  <div>
+    <button id="heaterOn" onclick="toggleRelay('/relay1on', 'heater')" class="button">Heater On</button>
+    <button id="heaterOff" onclick="toggleRelay('/relay1off', 'heater')" class="button">Heater Off</button>
+  </div>
+
+  <div>
+    <button id="kitchenOn" onclick="toggleRelay('/relay2on', 'kitchen')" class="button">Kitchen On</button>
+    <button id="kitchenOff" onclick="toggleRelay('/relay2off', 'kitchen')" class="button">Kitchen Off</button>
+  </div>
+
+  <div>
+    <button id="bedroomOn" onclick="toggleRelay('/relay3on', 'bedroom')" class="button">Bedroom On</button>
+    <button id="bedroomOff" onclick="toggleRelay('/relay3off', 'bedroom')" class="button">Bedroom Off</button>
+  </div>
+
+  <div>
+    <button id="socketOn" onclick="toggleRelay('/relay4on', 'socket')" class="button">Socket On</button>
+    <button id="socketOff" onclick="toggleRelay('/relay4off', 'socket')" class="button">Socket Off</button>
+  </div>
+
+  <script>
+    function toggleRelay(url, room) {
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(data => {
+          console.log(data);
+          document.getElementById(room + 'On').classList.toggle('on', data.includes('ON'));
+          document.getElementById(room + 'Off').classList.toggle('on', data.includes('OFF'));
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+  </script>
+</body>
+</html>
